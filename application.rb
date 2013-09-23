@@ -23,6 +23,10 @@ class Application < Sinatra::Base
     js_compression :jsmin
   }
 
+  get '/images/sert/full/:filename'  do |filename|
+    send_file "./assets/images/sert/full/#{filename}", :filename => filename
+  end
+
   get '/' do
     haml :index
   end
