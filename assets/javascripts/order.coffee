@@ -24,62 +24,20 @@ $ ->
     else
       name.css 'border', 'none'
 
-    $('.modal-overlay').bind 'click', ->
-      hide_thank_you()
+    email = $(@).parent().find('input[name=email]')
+    if email.val().length < 7
+      email.css 'border', '1px solid red'
+      return false
+    else
+      name.css 'border', 'none'
 
-    $.post '/orders.json', {'order[username]': $('input[name=username]').val(), 'order[phone]': $('input[name=phone]').val()}, (data) =>
-      $('.modal-overlay').unbind 'click'
-      $('.modal-overlay').bind 'click', ->
-        hide_thank_you()
+    $.post '/orders.json', {'order[username]': $('input[name=username]').val(), 'order[phone]': $('input[name=phone]').val(), 'order[email]': $('input[name=email]').val()}, (data) =>
+
 
     name.val('')
     phone.val('')
+    email.val('')
 
-    hide_order_form()
-    show_thank_you()
+    alert('Ваш заказ отправлен, мы вам скоро позвоним!')
 
     false
-
-
-  $('#hide-thank-you').bind 'click', ->
-    hide_thank_you()
-    false
-
-
-window.show_order_form = ->
-  $('.modal-overlay').show()
-  $('.modal-overlay').animate({'opacity': '0.8'}, 300, ->
-    $('.modal-dialog').css('bottom', '-300px')
-    $('.modal-dialog').css('left', '50%')
-    $('.modal-dialog').show()
-    $('.modal-dialog').animate({'bottom': '50%'}, 500)
-  )
-
-window.hide_order_form = ->
-  $('.modal-dialog').animate({'left': '-2000px'}, 500, ->
-    $('.modal-dialog').hide()
-  )
-
-window.hide_order_form_with_bg = ->
-  $('.modal-dialog').animate({'left': '-2000px'}, 500, ->
-    $('.modal-dialog').hide()
-    $('.modal-overlay').animate {'opacity': '0'}, 300, ->
-      $('.modal-overlay').hide()
-  )
-
-
-window.show_thank_you = ->
-
-  $('.modal-overlay').show()
-  $('.modal-overlay').animate({'opacity': '0.8'}, 300, ->
-    $('.modal-thank-you').css('right', '-500px')
-    $('.modal-thank-you').css('top', '50%')
-    $('.modal-thank-you').show()
-    $('.modal-thank-you').animate({'right': '50%'}, 500)
-  )
-
-window.hide_thank_you = ->
-  $('.modal-thank-you').animate {'top': '-2000px'}, 500, ->
-    $('.modal-thank-you').hide()
-    $('.modal-overlay').animate {'opacity': '0'}, 300, ->
-      $('.modal-overlay').hide()
